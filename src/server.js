@@ -20,7 +20,7 @@ dotenv.config();
 
 const allowedOrigins = [
   "http://localhost:5173", // Vite local development
-  "https://your-dashboard.vercel.app", // Production
+  "https://lottery-shop-dashboard.vercel.app", // Production
 ];
 
 const app = express();
