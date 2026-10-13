@@ -45,12 +45,12 @@ export function createTelegramRouter({ db }) {
       const formatNumber = (n) => n.toLocaleString("en-US");
 
       const reply = [
-        "📊 Card Summary",
+        "📊 สรุปยอดของวันนี้",
         "",
-        `📦 Total Withdrawn: ${formatNumber(totalWithdrawl)}`,
-        `🎁 Total Redeemed: ${formatNumber(totalRedeem)}`,
-        `📈 Redeem Rate: ${percent.toFixed(2)}%`,
-        `🧮 Remaining: ${formatNumber(
+        `📦 ยอดที่ร้านเบิกบัตรทั้งหมด: ${formatNumber(totalWithdrawl)}`,
+        `🎁 ยอดลูกค้านำบัตรมาเบิกรางวัล: ${formatNumber(totalRedeem)}`,
+        `📈 อัตราการเบิก: ${percent.toFixed(2)}%`,
+        `บัตรคงเหลือ: ${formatNumber(
           Math.max(0, totalWithdrawl - totalRedeem),
         )}`,
       ].join("\n");
