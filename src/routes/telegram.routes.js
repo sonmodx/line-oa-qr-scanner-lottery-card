@@ -3,7 +3,7 @@ import express from "express";
 export function createTelegramRouter({ db }) {
   const router = express.Router();
 
-  router.post("/telegram/webhook", async (req, res) => {
+  router.post("/telegram/webhook", express.json(), async (req, res) => {
     // Verify Telegram's webhook secret.
     if (
       req.get("X-Telegram-Bot-Api-Secret-Token") !==
