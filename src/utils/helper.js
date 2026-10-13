@@ -49,26 +49,6 @@ function getLocalDateTimeString() {
   return localDateTime;
 }
 
-function getTodayRangeBangkok() {
-  const now = new Date();
-  //Firestore stores timestamps in UTC, so we need to calculate the start and end of the day in Bangkok time (UTC+7) to query correctly.
-  const bangkokDate = new Intl.DateTimeFormat("en-CA", {
-    timeZone: "Asia/Bangkok",
-    year: "numeric",
-    month: "2-digit",
-    day: "2-digit",
-  }).format(now);
-
-  const [year, month, day] = bangkokDate.split("-").map(Number);
-
-  // Thailand is UTC+7.
-  const from = new Date(Date.UTC(year, month - 1, day) - 7 * 60 * 60 * 1000);
-
-  const to = new Date(from.getTime() + 24 * 60 * 60 * 1000);
-
-  return { from, to };
-}
-
 export {
   getLineProfile,
   getLocalDateTimeString,
