@@ -24,9 +24,21 @@ export function createTelegramRouter({ db }) {
 
       if (!chatId || text !== "1") return;
 
+      const { from, to } = getTodayRangeBangkok();
+
       const [withdrawalSnapshot, redeemSnapshot] = await Promise.all([
-        db.collection("cardWithdrawals").get(),
-        db.collection("prizeHistories").where("status", "==", "matched").get(),
+        db
+          .collection("cardWithdrawals")
+          .where("withdrawalDate", ">=", from)
+          .where("withdrawalDate", "<", to)
+          .get(),
+
+        db
+          .collection("prizeHistories")
+          .where("status", "==", "matched")
+          .where("scannedAt", ">=", from)
+          .where("scannedAt", "<", to)
+          .get(),
       ]);
 
       // Total cards withdrawn.
@@ -45,7 +57,7 @@ export function createTelegramRouter({ db }) {
       const formatNumber = (n) => n.toLocaleString("en-US");
 
       const reply = [
-        "📊 สรุปยอดของวันนี้",
+        `📊 สรุปยอดของวันนี้ (ตั้งแต่: ${from.toLocaleString("th-TH")}, ถึง: ${to.toLocaleString("th-TH")})`,
         "",
         `📦 ยอดที่ร้านเบิกบัตรทั้งหมด: ${formatNumber(totalWithdrawl)}`,
         `🎁 ยอดลูกค้านำบัตรมาเบิกรางวัล: ${formatNumber(totalRedeem)}`,
