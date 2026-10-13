@@ -5,6 +5,7 @@ import { db } from "./firebase.js";
 import { FieldValue } from "firebase-admin/firestore";
 import { getAuth } from "firebase-admin/auth";
 import { createDashboardRouter } from "./routes/dashboard.routes.js";
+import { createTelegramRouter } from "./routes/telegram.routes.js";
 import {
   getLineProfile,
   getLocalDateTimeString,
@@ -70,6 +71,8 @@ app.use(
     adminAuth: getAuth(),
   }),
 );
+
+app.use(createTelegramRouter({ db }));
 
 // Health check.
 app.get("/", (_req, res) => {
