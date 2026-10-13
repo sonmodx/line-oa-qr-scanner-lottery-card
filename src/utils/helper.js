@@ -49,9 +49,4 @@ function getLocalDateTimeString() {
   return localDateTime;
 }
 
-export {
-  getLineProfile,
-  getLocalDateTimeString,
-  getShopByLineUserId,
-  getTodayRangeBangkok,
-};
+export { getLineProfile, getLocalDateTimeString, getShopByLineUserId };
