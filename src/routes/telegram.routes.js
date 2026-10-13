@@ -84,7 +84,7 @@ export function createTelegramRouter({ db }) {
         "",
         `📦 จำนวนที่ร้านเบิกบัตรทั้งหมด: ${formatNumber(totalWithdrawl)}`,
         `🎁 จำนวนลูกค้านำบัตรมาเบิกรางวัล: ${formatNumber(totalRedeem)}`,
-        `📈 อัตราการเบิก: ${percent.toFixed(2)}%`,
+        `📈 อัตราการเบิกรางวัล: ${percent.toFixed(2)}%`,
         `บัตรคงเหลือ: ${formatNumber(
           Math.max(0, totalWithdrawl - totalRedeem),
         )}`,
