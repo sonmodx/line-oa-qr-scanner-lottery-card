@@ -25,7 +25,7 @@ export function createTelegramRouter({ db }) {
       if (!chatId || text !== "1") return;
 
       const now = new Date();
-      now.setDate(now.getDate() - 1);
+
       // Convert current time to Thailand local time strings
       const localDateStr = now.toLocaleDateString("en-US", {
         timeZone: "Asia/Bangkok",
