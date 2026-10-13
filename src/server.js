@@ -222,7 +222,7 @@ async function handleEvent(event) {
         if (!result.found) {
           replyText = `ไม่พบรางวัล.\nหมายเลขบัตร: ${serialNumber}`;
         } else if (!result.available) {
-          replyText = `รางวัลนี้ถูกเคลมแล้ว หรือไม่สามารถใช้งานได้.\nหมายเลขบัตร: ${serialNumber}`;
+          replyText = `รางวัลนี้ถูกขึ้นเงินแล้ว หรือไม่สามารถใช้งานได้.\nหมายเลขบัตร: ${serialNumber}`;
         } else {
           const prize = result.prize;
 
