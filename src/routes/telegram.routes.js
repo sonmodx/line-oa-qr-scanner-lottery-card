@@ -1,5 +1,4 @@
 import express from "express";
-import { getTodayRangeBangkok } from "../utils/helper.js";
 
 export function createTelegramRouter({ db }) {
   const router = express.Router();
@@ -25,20 +24,29 @@ export function createTelegramRouter({ db }) {
 
       if (!chatId || text !== "1") return;
 
-      const { from, to } = getTodayRangeBangkok();
+      const now = new Date();
+      // Convert current time to Thailand local time strings
+      const localDateStr = now.toLocaleDateString("en-US", {
+        timeZone: "Asia/Bangkok",
+      });
 
+      // Create Date objects for the exact start (00:00:00) and end (23:59:59.999) of today in Thailand
+      const startOfToday = new Date(`${localDateStr} 00:00:00 GMT+0700`);
+      const endOfToday = new Date(`${localDateStr} 23:59:59.999 GMT+0700`);
+
+      // 2. Update your Firestore queries with timestamp range filters
       const [withdrawalSnapshot, redeemSnapshot] = await Promise.all([
         db
           .collection("cardWithdrawals")
-          .where("withdrawalDate", ">=", from)
-          .where("withdrawalDate", "<", to)
+          .where("createdAt", ">=", startOfToday)
+          .where("createdAt", "<=", endOfToday)
           .get(),
 
         db
           .collection("prizeHistories")
           .where("status", "==", "matched")
-          .where("scannedAt", ">=", from)
-          .where("scannedAt", "<", to)
+          .where("createdAt", ">=", startOfToday)
+          .where("createdAt", "<=", endOfToday)
           .get(),
       ]);
 
@@ -58,7 +66,7 @@ export function createTelegramRouter({ db }) {
       const formatNumber = (n) => n.toLocaleString("en-US");
 
       const reply = [
-        `📊 สรุปยอดของวันนี้ (ตั้งแต่: ${from.toLocaleString("th-TH")}, ถึง: ${to.toLocaleString("th-TH")})`,
+        "📊 สรุปยอดของวันนี้",
         "",
         `📦 ยอดที่ร้านเบิกบัตรทั้งหมด: ${formatNumber(totalWithdrawl)}`,
         `🎁 ยอดลูกค้านำบัตรมาเบิกรางวัล: ${formatNumber(totalRedeem)}`,
