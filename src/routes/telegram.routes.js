@@ -38,15 +38,15 @@ export function createTelegramRouter({ db }) {
       const [withdrawalSnapshot, redeemSnapshot] = await Promise.all([
         db
           .collection("cardWithdrawals")
-          .where("createdAt", ">=", startOfToday)
-          .where("createdAt", "<=", endOfToday)
+          .where("withdrawalDate", ">=", startOfToday)
+          .where("withdrawalDate", "<=", endOfToday)
           .get(),
 
         db
           .collection("prizeHistories")
           .where("status", "==", "matched")
-          .where("createdAt", ">=", startOfToday)
-          .where("createdAt", "<=", endOfToday)
+          .where("scannedAt", ">=", startOfToday)
+          .where("scannedAt", "<=", endOfToday)
           .get(),
       ]);
 
@@ -65,8 +65,21 @@ export function createTelegramRouter({ db }) {
 
       const formatNumber = (n) => n.toLocaleString("en-US");
 
+      const options = {
+        timeZone: "Asia/Bangkok",
+        hour12: false,
+        year: "numeric",
+        month: "2-digit",
+        day: "2-digit",
+        hour: "2-digit",
+        minute: "2-digit",
+      };
+
+      const fromText = startOfToday.toLocaleString("th-TH", options);
+      const toText = endOfToday.toLocaleString("th-TH", options);
+
       const reply = [
-        "📊 สรุปยอดของวันนี้",
+        `📊 สรุปยอดของวันนี้ (${fromText} ถึง ${toText})`,
         "",
         `📦 ยอดที่ร้านเบิกบัตรทั้งหมด: ${formatNumber(totalWithdrawl)}`,
         `🎁 ยอดลูกค้านำบัตรมาเบิกรางวัล: ${formatNumber(totalRedeem)}`,
